@@ -120,7 +120,7 @@ LOCALE_PATHS = [BASE_DIR / "locale"]
 
 STATIC_URL = "/static/"
 
-STATIC_ROOT = BASE_DIR.parent.parent / "staticfiles"
+STATIC_ROOT = None
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
