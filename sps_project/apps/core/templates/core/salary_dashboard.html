@@ -1,0 +1,102 @@
+<!-- filepath: /c:/Archive/Projects/SPS/sps_project/apps/core/templates/core/salary_dashboard.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %} Salary Management {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Salary Management</h2>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addSalaryModal">Add New Salary Record</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Basic Pay</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for salary in page_obj %}
+            <tr>
+                <td>{{ salary.employee.name }}</td>
+                <td>{{ salary.salary_date }}</td>
+                <td>{{ salary.basic_pay }}</td>
+                <td>
+                    <a href="{% url 'core:salary_update' salary.id %}" class="btn btn-warning">Update</a>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteSalaryModal{{ salary.id }}">Delete</button>
+                    <a class="btn btn-primary" href="{% url 'core:generate_payslip' salary.id %}">Generate Payslip</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+<!-- Add Salary Modal -->
+<div class="modal fade" id="addSalaryModal" tabindex="-1" role="dialog" aria-labelledby="addSalaryModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addSalaryModalLabel">Add New Salary Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addSalaryForm" method="post" action="{% url 'core:salary_add' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Add Salary</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Salary Modal -->
+{% for salary in page_obj %}
+<div class="modal fade" id="deleteSalaryModal{{ salary.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteSalaryModalLabel{{ salary.id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSalaryModalLabel{{ salary.id }}">Delete Salary Record</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this salary record?</p>
+                <form id="deleteSalaryForm{{ salary.id }}" method="post" action="{% url 'core:salary_delete' salary.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock javascripts %}

@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Payroll/argon-dashboard-django-master/argon-dashboard-django-master"
+		}
+	],
+	"settings": {}
+}

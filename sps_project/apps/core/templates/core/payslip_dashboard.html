@@ -1,0 +1,59 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Payslip Management {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Payslip Management</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Employee</th>
+                <th>Date</th>
+                <th>Gross Pay</th>
+                <th>Total Deductions</th>
+                <th>Net Pay</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payslip in page_obj %}
+            <tr>
+                <td>{{ payslip.employee.name }}</td>
+                <td>{{ payslip.date }}</td>
+                <td>{{ payslip.gross_pay }}</td>
+                <td>{{ payslip.total_deductions }}</td>
+                <td>{{ payslip.net_pay }}</td>
+                <td>
+                    <a href="{% url 'core:view_payslip' payslip.pk %}" class="btn btn-info">View</a>
+                    <a href="{% url 'core:send_payslip_email' payslip.pk %}" class="btn btn-primary">Send Email</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock javascripts %}

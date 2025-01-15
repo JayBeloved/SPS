@@ -1,0 +1,103 @@
+<!-- filepath: /c:/Archive/Projects/SPS/sps_project/apps/core/templates/core/employee_dashboard.html -->
+{% extends 'layouts/base.html' %}
+
+{% block title %} Employee Management {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Employee Management</h2>
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#addEmployeeModal">Add New Employee</button>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Employee Code</th>
+                <th>Designation</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in page_obj %}
+            <tr>
+                <td>{{ employee.name }}</td>
+                <td>{{ employee.employee_code }}</td>
+                <td>{{ employee.designation }}</td>
+                <td>{{ employee.location }}</td>
+                <td>
+                    <a href="{% url 'core:employee_update' employee.id %}" class="btn btn-warning">Update</a>
+                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteEmployeeModal{{ employee.id }}">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
+
+<!-- Add Employee Modal -->
+<div class="modal fade" id="addEmployeeModal" tabindex="-1" role="dialog" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addEmployeeModalLabel">Add New Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addEmployeeForm" method="post" action="{% url 'core:employee_add' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Add Employee</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Employee Modal -->
+{% for employee in page_obj %}
+<div class="modal fade" id="deleteEmployeeModal{{ employee.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteEmployeeModalLabel{{ employee.id }}" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteEmployeeModalLabel{{ employee.id }}">Delete Employee</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete {{ employee.name }}?</p>
+                <form id="deleteEmployeeForm{{ employee.id }}" method="post" action="{% url 'core:employee_delete' employee.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+{% endblock javascripts %}

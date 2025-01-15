@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Edit Salary {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Edit Salary</h2>
+    <form method="post" action="{% url 'core:salary_update' salary.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Update Salary</button>
+    </form>
+</div>
+{% endblock content %}
