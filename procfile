@@ -1,2 +1,2 @@
-web: gunicorn sps_project.wsgi:application --log-file -
+web: gunicorn sps_project.wsgi --preload --log-file -
 release: python manage.py collectstatic --noinput
