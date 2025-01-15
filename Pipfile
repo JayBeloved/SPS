@@ -18,6 +18,7 @@ tox = "*"
 django-debug-toolbar = "*"
 ipython = "*"
 weasyprint = "*"
+whitenoise = "*"
 
 [dev-packages]
 
