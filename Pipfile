@@ -19,6 +19,7 @@ django-debug-toolbar = "*"
 ipython = "*"
 weasyprint = "*"
 whitenoise = "*"
+gunicorn = "*"
 
 [dev-packages]
 
