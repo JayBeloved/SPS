@@ -150,4 +150,4 @@ MEDIA_ROOT = BASE_DIR.parent.parent / "media"
 # FIRST-PARTY SETTINGS
 # ==============================================================================
 
-SPS_ENVIRONMENT = config("SPS_ENVIRONMENT", default=0)
+SPS_ENVIRONMENT = config("SPS_ENVIRONMENT", default='local')
