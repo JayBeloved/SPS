@@ -1,7 +1,7 @@
 # flake8: noqa
 
-import sentry_sdk
-from sentry_sdk.integrations.django import DjangoIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.django import DjangoIntegration
 
 import sps_project
 from .base import *
@@ -44,9 +44,9 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='contact.johnjlawal@gm
 # THIRD-PARTY APPS SETTINGS
 # ==============================================================================
 
-sentry_sdk.init(
-    dsn=config("SENTRY_DSN", default=""),
-    environment=SPS_ENVIRONMENT,
-    release="sps@%s" % sps_project.__version__,
-    integrations=[DjangoIntegration()],
-)
+# sentry_sdk.init(
+#     dsn=config("SENTRY_DSN", default=""),
+#     environment=SPS_ENVIRONMENT,
+#     release="sps@%s" % sps_project.__version__,
+#     integrations=[DjangoIntegration()],
+# )
