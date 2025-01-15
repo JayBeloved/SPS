@@ -1,2 +1,2 @@
-web: gunicorn sps_project.wsgi.application --log-level=info 
+web: gunicorn sps_project.wsgi:application
 release: python manage.py collectstatic --noinput

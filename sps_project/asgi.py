@@ -11,6 +11,8 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sps_project.settings")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sps_project.settings.local')
+if 'DJANGO_PRODUCTION' in os.environ:
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'sps_project.settings.production'
 
 application = get_asgi_application()
