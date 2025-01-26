@@ -293,6 +293,8 @@ def upload_employees(request):
                     employee.save()
             messages.success(request, 'Employees uploaded successfully.')
             return redirect('core:employee_list')
+        else:
+            messages.error(request, 'Failed to upload employees. Please check the file format.')
     else:
         form = EmployeeUploadForm()
     return render(request, 'core/upload_employees.html', {'form': form})
@@ -410,5 +412,5 @@ def bulk_send_payslips(request):
             email.attach(f'payslip_{payslip.employee.employee_code}_{payslip.date}.pdf', pdf, 'application/pdf')
             email.send()
         messages.success(request, f'{salaries.count()} payslips sent successfully.')
-        return redirect('core:admin_dashboard')
+        return redirect('core:dashboard')
     return render(request, 'core/bulk_send_payslips.html')

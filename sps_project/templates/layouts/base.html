@@ -22,7 +22,7 @@
   <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-argon">
   
   <title>
-    Django Argon Dashboard - {% block title %} Open-Source Admin Panel {% endblock %} | AppSeed
+    SmartPaySlip - {% block title %} App {% endblock %} | JJL
   </title>
 
   <!-- Favicon - loaded as static -->
@@ -36,6 +36,7 @@
   <!-- Argon CSS -->
   <link rel="stylesheet" href="/static/assets/css/argon.css?v=1.2.0" type="text/css">
 
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
 
@@ -51,6 +52,20 @@
 
     {% block content %}{% endblock content %}
 
+    <!-- Messages Section -->
+    <div class="container mt-3">
+      {% if messages %}
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+          {% endfor %}
+      {% endif %}
+  </div>
+
   </div>
 
   {% include "includes/scripts.html" %}
@@ -59,6 +74,8 @@
   {% block javascripts %}{% endblock javascripts %}
 
   <script src="/static/assets/js/argon.js?v=1.2.0"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 
