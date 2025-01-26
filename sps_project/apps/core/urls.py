@@ -18,4 +18,10 @@ urlpatterns = [
     path('payslip/view/<int:pk>/', views.view_payslip, name='view_payslip'),
     path('payslip/send/<int:pk>/', views.send_payslip_email, name='send_payslip_email'),
     path('test-email/', views.test_email, name='test_email'),
+    path('upload-employees/', views.upload_employees, name='upload_employees'),
+    path('export-template/', views.export_template, name='export_template'),
+    path('import-payroll/', views.import_payroll, name='import_payroll'),
+    path('bulk-send-payslips/', views.bulk_send_payslips, name='bulk_send_payslips'),
+    path('export-employee-template/', views.export_employee_template, name='export_employee_template'),
+    
 ]

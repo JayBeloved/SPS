@@ -1,6 +1,10 @@
 from pathlib import Path
 import dj_database_url
 from decouple import config, Csv
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
+
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent

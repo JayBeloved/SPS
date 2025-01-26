@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Import Salary Records {% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Import Payroll</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">import</button>
+    </form>
+</div>
+{% endblock content %}

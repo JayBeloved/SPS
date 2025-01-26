@@ -20,6 +20,8 @@ ipython = "*"
 weasyprint = "*"
 whitenoise = "*"
 gunicorn = "*"
+openpyxl = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

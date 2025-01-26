@@ -44,3 +44,17 @@ class SalaryForm(forms.ModelForm):
             'development_levy': forms.NumberInput(attrs={'class': 'form-control'}),
             'personal_income_tax': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+
+class EmployeeUploadForm(forms.Form):
+    file = forms.FileField()
+    widget = {
+        'file': forms.FileInput(attrs={'class': 'form-control form-control-file'})
+    }
+
+
+class PayrollUploadForm(forms.Form):
+    file = forms.FileField()
+    widget = {
+        'file': forms.FileInput(attrs={'class': 'form-control form-control-file'})
+    }

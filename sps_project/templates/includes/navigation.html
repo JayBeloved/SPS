@@ -142,38 +142,42 @@
             <!-- View all -->
             <a href="#!" class="dropdown-item text-center text-primary font-weight-bold py-3">View all</a>
           </div>
-        </li>
+        </li> {% endcomment %}
         <li class="nav-item dropdown">
           <a class="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="ni ni-ungroup"></i>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-dark bg-default  dropdown-menu-right ">
             <div class="row shortcuts px-4">
-              <a href="#!" class="col-4 shortcut-item">
+              <a href="{% url 'core:upload_employees' %}" class="col-6 shortcut-item">
                 <span class="shortcut-media avatar rounded-circle bg-gradient-red">
-                  <i class="ni ni-calendar-grid-58"></i>
+                    <i class="ni ni-circle-08"></i>
                 </span>
-                <small>Calendar</small>
+                <br>
+                <small>Upload Employees</small>
               </a>
-              <a href="#!" class="col-4 shortcut-item">
+              <a href="{% url 'core:bulk_send_payslips' %}" class="col-6 shortcut-item">
                 <span class="shortcut-media avatar rounded-circle bg-gradient-orange">
                   <i class="ni ni-email-83"></i>
                 </span>
-                <small>Email</small>
+                <br>
+                <small>Send Emails</small>
               </a>
-              <a href="#!" class="col-4 shortcut-item">
+              <a href="{% url 'core:import_payroll' %}" class="col-6 shortcut-item">
                 <span class="shortcut-media avatar rounded-circle bg-gradient-info">
                   <i class="ni ni-credit-card"></i>
                 </span>
-                <small>Payments</small>
+                <br>
+                <small>Import Payroll</small>
               </a>
-              <a href="#!" class="col-4 shortcut-item">
+              <a href="{% url 'core:export_template' %}" class="col-6 shortcut-item">
                 <span class="shortcut-media avatar rounded-circle bg-gradient-green">
                   <i class="ni ni-books"></i>
                 </span>
-                <small>Reports</small>
+                <br>
+                <small>Export Templates</small>
               </a>
-              <a href="#!" class="col-4 shortcut-item">
+              {% comment %} <a href="#!" class="col-4 shortcut-item">
                 <span class="shortcut-media avatar rounded-circle bg-gradient-purple">
                   <i class="ni ni-pin-3"></i>
                 </span>
@@ -184,10 +188,10 @@
                   <i class="ni ni-basket"></i>
                 </span>
                 <small>Shop</small>
-              </a>
+              </a> {% endcomment %}
             </div>
           </div>
-        </li> {% endcomment %}
+        </li>
       </ul>
       <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
         <li class="nav-item dropdown">

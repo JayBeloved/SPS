@@ -1,19 +1,21 @@
 import random
-import string, os
+import string, os, csv
+import openpyxl
 from django.conf import settings
 from django.utils import timezone
 from django.core.paginator import Paginator
 from django.db.models import Sum, Count
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.contrib import messages
+from django.http import HttpResponse, JsonResponse
 from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage, send_mail
 from weasyprint import HTML
 from .models import Employee, Payslip, Salary
-from .forms import EmployeeForm, SalaryForm
+from .forms import EmployeeForm, SalaryForm, EmployeeUploadForm, PayrollUploadForm
 
 
 # Create your views here.
@@ -59,9 +61,14 @@ def employee_add(request):
     if request.method == 'POST':
         form = EmployeeForm(request.POST)
         if form.is_valid():
-            employee = form.save(commit=False)
-            employee.employee_code = generate_reference_code(employee)
-            employee.save()
+            name = form.cleaned_data['name']
+            email = form.cleaned_data['email']
+            phone_number = form.cleaned_data['phone_number']
+            if not Employee.objects.filter(name=name, email=email, phone_number=phone_number).exists():
+                employee = form.save(commit=False)
+                employee.employee_code = generate_reference_code(employee)
+                employee.save()
+                messages.success(request, 'Employee added successfully.')
             return redirect('core:employee_list')
     return redirect('core:employee_list')
 
@@ -258,3 +265,150 @@ def test_email(request):
         return HttpResponse('Email sent successfully.')
     except Exception as e:
         return HttpResponse(f'Error sending email: {e}')
+
+
+@login_required
+def upload_employees(request):
+    if request.method == 'POST':
+        form = EmployeeUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['file']
+            decoded_file = csv_file.read().decode('utf-8').splitlines()
+            reader = csv.DictReader(decoded_file)
+            for row in reader:
+                if not Employee.objects.filter(name=row['name'], email=row['email']).exists():
+                    employee = Employee.objects.create(
+                        name=row['name'],
+                        email=row['email'],
+                        location=row['location'],
+                        staff_type=row['staff_type'],
+                        designation=row['designation'],
+                        grade_level=row['grade_level'],
+                        account_number=row['account_number'],
+                        bank_name=row['bank_name'],
+                        account_name=row['account_name'],
+                        phone_number=row['phone_number'],
+                    )
+                    employee.employee_code = generate_reference_code(employee)
+                    employee.save()
+            messages.success(request, 'Employees uploaded successfully.')
+            return redirect('core:employee_list')
+    else:
+        form = EmployeeUploadForm()
+    return render(request, 'core/upload_employees.html', {'form': form})
+    
+    
+@login_required
+def export_employee_template(request):
+    # Define the headers for the CSV file
+    headers = [
+        'name', 'email', 'location', 'staff_type', 'designation', 
+        'grade_level', 'account_number', 'bank_name', 'account_name'
+    ]
+
+    # Create a CSV response
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename=employee_template.csv'
+
+    writer = csv.writer(response)
+    writer.writerow(headers)
+
+    return response
+
+@login_required
+def export_template(request):
+    employees = Employee.objects.all()
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = 'Payroll Template'
+
+    # Add headers
+    headers = [
+        'Reference Number', 'Name', 'Basic Pay', 'Rent Allowance', 'Transport Allowance', 
+        'Meal Allowance', 'Utility Allowance', 'Other Allowances', 'Overtime', 'Arrears', 
+        'Staff Loan Deduction', 'Rent Deduction', 'Medical Deduction', 'Pension Contribution', 
+        'Shortage Deduction', 'Development Levy', 'Personal Income Tax'
+    ]
+    sheet.append(headers)
+
+    # Add employee data
+    for employee in employees:
+        sheet.append([
+            employee.employee_code, employee.name, '', '', '', '', '', '', '', '', 
+            '', '', '', '', '', '', ''
+        ])
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=payroll_template.xlsx'
+    workbook.save(response)
+    return response
+
+
+@login_required
+def import_payroll(request):
+    if request.method == 'POST':
+        form = PayrollUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            excel_file = request.FILES['file']
+            workbook = openpyxl.load_workbook(excel_file)
+            sheet = workbook.active
+            for row in sheet.iter_rows(min_row=2, values_only=True):
+                reference_number, name, basic_pay, rent_allowance, transport_allowance, \
+                meal_allowance, utility_allowance, other_allowances, overtime, arrears, \
+                staff_loan_deduction, rent_deduction, medical_deduction, pension_contribution, \
+                shortage_deduction, development_levy, personal_income_tax = row
+                employee = Employee.objects.get(reference_number=reference_number)
+                Salary.objects.create(
+                    employee=employee,
+                    basic_pay=basic_pay,
+                    rent_allowance=rent_allowance,
+                    transport_allowance=transport_allowance,
+                    meal_allowance=meal_allowance,
+                    utility_allowance=utility_allowance,
+                    other_allowances=other_allowances,
+                    overtime=overtime,
+                    arrears=arrears,
+                    staff_loan_deduction=staff_loan_deduction,
+                    rent_deduction=rent_deduction,
+                    medical_deduction=medical_deduction,
+                    pension_contribution=pension_contribution,
+                    shortage_deduction=shortage_deduction,
+                    development_levy=development_levy,
+                    personal_income_tax=personal_income_tax
+                )
+            messages.success(request, 'Payroll imported successfully.')
+            return redirect('core:salary_list')
+    else:
+        form = PayrollUploadForm()
+    return render(request, 'core/import_payroll.html', {'form': form})
+
+
+@login_required
+def bulk_send_payslips(request):
+    if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        month = request.GET.get('month')
+        year, month = map(int, month.split('-'))
+        salaries = Salary.objects.filter(salary_date__year=year, salary_date__month=month)
+        count = salaries.count()
+        return JsonResponse({'count': count})
+
+    if request.method == 'POST':
+        month = request.POST.get('month')
+        year, month = map(int, month.split('-'))
+        salaries = Salary.objects.filter(salary_date__year=year, salary_date__month=month)
+        for salary in salaries:
+            payslip = Payslip.objects.get(salary=salary)
+            html = generate_payslip_pdf(payslip)
+            pdf = html.write_pdf()
+
+            email = EmailMessage(
+                subject=f'Payslip for {payslip.employee.name}',
+                body=f"Dear {payslip.employee.name},\nPlease find attached your payslip for the month of {payslip.date.strftime('%B')}.",
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[payslip.employee.email],
+            )
+            email.attach(f'payslip_{payslip.employee.employee_code}_{payslip.date}.pdf', pdf, 'application/pdf')
+            email.send()
+        messages.success(request, f'{salaries.count()} payslips sent successfully.')
+        return redirect('core:admin_dashboard')
+    return render(request, 'core/bulk_send_payslips.html')
