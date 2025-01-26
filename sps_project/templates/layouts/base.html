@@ -19,6 +19,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="SmartPaySlip - A comprehensive solution for managing payslips.">
+  <meta name="keywords" content="SmartPaySlip, Payslip Management, Payroll, Employee Management">
+  <meta name="author" content="John J. Lawal">
   <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-argon">
   
   <title>
@@ -50,8 +53,6 @@
 
     {% include "includes/navigation.html" %}
 
-    {% block content %}{% endblock content %}
-
     <!-- Messages Section -->
     <div class="container mt-3">
       {% if messages %}
@@ -64,6 +65,10 @@
               </div>
           {% endfor %}
       {% endif %}
+
+    {% block content %}{% endblock content %}
+
+    
   </div>
 
   </div>
@@ -74,8 +79,6 @@
   {% block javascripts %}{% endblock javascripts %}
 
   <script src="/static/assets/js/argon.js?v=1.2.0"></script>
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 

@@ -148,19 +148,19 @@
                       <th scope="col">Location</th>
                     </tr>
                   </thead>
-                  <tbody>
+                    <tbody>
                     {% if employees %}
-                      {% for employee in employees %}
-                        <tr>
-                          <th scope="row">{{ employee.name }}</th>
-                          <td>{{ employee.employee_code }}</td>
-                          <td>{{ employee.designation }}</td>
-                          <td>{{ employee.location }}</td>
-                        </tr>
+                      {% for employee in employees|slice:":5" %}
+                      <tr>
+                        <th scope="row">{{ employee.name }}</th>
+                        <td>{{ employee.employee_code }}</td>
+                        <td>{{ employee.designation }}</td>
+                        <td>{{ employee.location }}</td>
+                      </tr>
                       {% endfor %}
                     {% else %}
                       <tr>
-                        <td colspan="4">No employees found.</td>
+                      <td colspan="4">No employees found.</td>
                       </tr>
                     {% endif %}
                   </tbody>
@@ -219,5 +219,7 @@
 
   <script src="/static/assets/vendor/chart.js/dist/Chart.min.js"></script>
   <script src="/static/assets/vendor/chart.js/dist/Chart.extension.js"></script>
-
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 {% endblock javascripts %}
