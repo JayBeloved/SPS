@@ -117,7 +117,7 @@ USE_TZ = True
 
 LOCALE_PATHS = [BASE_DIR / "locale"]
 
-LOGIN_URL = 'accounts:login'
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'core:dashboard'
 
 
