@@ -360,7 +360,7 @@ def import_payroll(request):
                 staff_loan_deduction, rent_deduction, medical_deduction, pension_contribution, \
                 shortage_deduction, development_levy, personal_income_tax, no_of_days, actual_attendance = row
                 employee = Employee.objects.get(employee_code=employee_code)
-                Salary.objects.create(
+                salary = Salary.objects.create(
                     employee=employee,
                     basic_pay=basic_pay,
                     rent_allowance=rent_allowance,
@@ -377,16 +377,45 @@ def import_payroll(request):
                     shortage_deduction=shortage_deduction,
                     development_levy=development_levy,
                     personal_income_tax=personal_income_tax,
-                    no_of_days = no_of_days,
-                    actual_attendance = actual_attendance,
-                    salary_date = timezone.now()
+                    no_of_days=no_of_days,
+                    actual_attendance=actual_attendance,
+                    salary_date=timezone.now()
+                )
+                gross_pay = (
+                    salary.basic_pay +
+                    salary.rent_allowance +
+                    salary.transport_allowance +
+                    salary.meal_allowance +
+                    salary.utility_allowance +
+                    salary.other_allowances +
+                    salary.overtime +
+                    salary.arrears
+                )
+                total_deductions = (
+                    salary.staff_loan_deduction +
+                    salary.rent_deduction +
+                    salary.medical_deduction +
+                    salary.pension_contribution +
+                    salary.shortage_deduction +
+                    salary.development_levy +
+                    salary.personal_income_tax
+                )
+                net_pay = gross_pay - total_deductions
+
+                Payslip.objects.create(
+                    employee=salary.employee,
+                    salary=salary,
+                    date=salary.salary_date,
+                    gross_pay=gross_pay,
+                    total_deductions=total_deductions,
+                    net_pay=net_pay
                 )
             messages.success(request, 'Payroll imported successfully.')
             return redirect('core:salary_list')
     else:
         form = PayrollUploadForm()
     return render(request, 'core/import_payroll.html', {'form': form})
-
+    # Create payslip objects for each payroll imported
 
 @login_required
 def bulk_send_payslips(request):
