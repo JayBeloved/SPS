@@ -11,6 +11,7 @@ class Employee(models.Model):
     ]
     staff_type = models.CharField(max_length=3, choices=STAFF_TYPE_CHOICES)
     email = models.EmailField()
+    phone_number = models.CharField(max_length=15)
     designation = models.CharField(max_length=100)
     location = models.CharField(max_length=100)
     grade_level = models.CharField(max_length=10, null=True, blank=True)
