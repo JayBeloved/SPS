@@ -326,10 +326,10 @@ def export_template(request):
 
     # Add headers
     headers = [
-        'Reference Number', 'Name', 'Basic Pay', 'Rent Allowance', 'Transport Allowance', 
-        'Meal Allowance', 'Utility Allowance', 'Other Allowances', 'Overtime', 'Arrears', 
-        'Staff Loan Deduction', 'Rent Deduction', 'Medical Deduction', 'Pension Contribution', 
-        'Shortage Deduction', 'Development Levy', 'Personal Income Tax'
+        'employee_code', 'employee_name', 'basic_pay', 'rent_allowance', 'transport_allowance', 
+        'meal_allowance', 'utility_allowance', 'other_allowances', 'overtime', 'arrears', 
+        'staff_loan_deduction', 'rent_deduction', 'medical_deduction', 'pension_contribution', 
+        'shortage_deduction', 'development_levy', 'personal_income_tax', 'no_of_days', 'actual_attendance'
     ]
     sheet.append(headers)
 
@@ -337,7 +337,7 @@ def export_template(request):
     for employee in employees:
         sheet.append([
             employee.employee_code, employee.name, '', '', '', '', '', '', '', '', 
-            '', '', '', '', '', '', ''
+            '', '', '', '', '', '', '','',''
         ])
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
@@ -355,11 +355,11 @@ def import_payroll(request):
             workbook = openpyxl.load_workbook(excel_file)
             sheet = workbook.active
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                reference_number, name, basic_pay, rent_allowance, transport_allowance, \
+                employee_code, employee_name, basic_pay, rent_allowance, transport_allowance, \
                 meal_allowance, utility_allowance, other_allowances, overtime, arrears, \
                 staff_loan_deduction, rent_deduction, medical_deduction, pension_contribution, \
-                shortage_deduction, development_levy, personal_income_tax = row
-                employee = Employee.objects.get(reference_number=reference_number)
+                shortage_deduction, development_levy, personal_income_tax, no_of_days, actual_attendance = row
+                employee = Employee.objects.get(employee_code=employee_code)
                 Salary.objects.create(
                     employee=employee,
                     basic_pay=basic_pay,
@@ -376,7 +376,10 @@ def import_payroll(request):
                     pension_contribution=pension_contribution,
                     shortage_deduction=shortage_deduction,
                     development_levy=development_levy,
-                    personal_income_tax=personal_income_tax
+                    personal_income_tax=personal_income_tax,
+                    no_of_days = no_of_days,
+                    actual_attendance = actual_attendance,
+                    salary_date = timezone.now()
                 )
             messages.success(request, 'Payroll imported successfully.')
             return redirect('core:salary_list')
