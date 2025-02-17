@@ -1,0 +1,45 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Management Dashboard{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Management Dashboard</h2>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Employee Management</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:upload_employees' %}" class="btn btn-primary btn-block mt-2">Upload Employees</a></li>
+                        <li><a href="{% url 'core:export_employee_template' %}" class="btn btn-secondary btn-block mt-2">Export Employee Template</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Payroll Management</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:import_payroll' %}" class="btn btn-primary btn-block mt-2">Import Payroll</a></li>
+                        <li><a href="{% url 'core:export_template' %}" class="btn btn-secondary btn-block mt-2">Export Payroll Template</a></li>
+                        <li><a href="{% url 'core:bulk_send_payslips' %}" class="btn btn-success btn-block mt-2">Bulk Send Payslips</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Reports</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:monthly_payroll_summary' %}" class="btn btn-primary btn-block mt-2">Monthly Payroll Summary</a></li>
+                        <li><a href="{% url 'core:employee_compensation_report' %}" class="btn btn-secondary btn-block mt-2">Employee Compensation Report</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,3 +1,4 @@
+import datetime
 from django import forms
 from .models import Employee, Salary
 
@@ -59,3 +60,57 @@ class PayrollUploadForm(forms.Form):
     widget = {
         'file': forms.FileInput(attrs={'class': 'form-control form-control-file'})
     }
+
+
+class MonthlyPayrollSummaryForm(forms.Form):
+    month = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        label="Select Month"
+    )
+    staff_type = forms.ChoiceField(
+        choices=Employee.STAFF_TYPE_CHOICES,
+        required=False,
+        label="Select Staff Type",
+        widget=forms.Select(attrs={'class': 'form-control form-select'})
+    )
+    location = forms.CharField(
+        max_length=100,
+        required=False,
+        label="Select Location",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+
+    # def clean_month(self):
+    #     month_str = self.cleaned_data['month']
+    #     try:
+    #         return datetime.datetime.strptime(month_str, '%Y-%m').date()
+    #     except ValueError:
+    #         raise forms.ValidationError("Enter a valid date in YYYY-MM format.")
+
+class EmployeeCompensationReportForm(forms.Form):
+    start_date = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        label="Start Date"
+    )
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        label="End Date"
+    )
+    employees = forms.ModelMultipleChoiceField(
+        queryset=Employee.objects.all(),
+        required=False,
+        label="Select Employees",
+        widget=forms.SelectMultiple(attrs={'class': 'form-control form-select'})
+    )
+    staff_type = forms.ChoiceField(
+        choices=Employee.STAFF_TYPE_CHOICES,
+        required=False,
+        label="Select Staff Type",
+        widget=forms.Select(attrs={'class': 'form-control form-select'})
+    )
+    location = forms.CharField(
+        max_length=100,
+        required=False,
+        label="Select Location",
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )

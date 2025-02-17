@@ -1,157 +1,298 @@
+<!-- filepath: /c:/Archive/Projects/SPS/sps_project/apps/core/templates/core/payslip.html -->
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Payslip</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            font-size: 13px;
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            color: #2c3e50;
+            background: #f8f9fa;
         }
-        .header {
+
+        .payslip-container {
+            width: 90%;
+            max-width: 794px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .company-header {
             text-align: center;
-            margin-bottom: 6px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #34495e;
         }
-        .header img {
-            max-width: 100px;
+
+        .company-header h2 {
+            font-size: 2em;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
         }
-        .header h1 {
+
+        .company-header p {
             margin: 0;
-            font-size: 16px;
+            color: #7f8c8d;
+            font-size: 1.1em;
         }
-        .header h2 {
-            margin: 0;
-            font-size: 14px;
-        }
-        .details, .salary-details {
-            width: 100%;
-            margin-bottom: 7px;
-        }
-        .details th, .details td, .salary-details th, .salary-details td {
+
+        .header .company-info {
             text-align: left;
-            padding: 5px;
         }
-        .details th, .salary-details th {
-            background-color: #f2f2f2;
+
+        .header .company-info h1 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
         }
-        .salary-details {
+
+        .header .company-info p {
+            font-size: 0.9em;
+        }
+
+        .logo {
+            text-align: right;
+            width: 100px;
+        }
+
+        .logo img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .employee-section {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .employee-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .employee-info-label {
+            font-weight: 600;
+            color: #34495e;
+            min-width: 140px;
+            font-size: 1.1em;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 8px;
+            margin: 30px 0 25px;
+        }
+
+        .earnings-deductions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .salary-table {
+            width: 100%;
             border-collapse: collapse;
+            margin-bottom: 20px;
         }
-        .salary-details th, .salary-details td {
-            border: 1px solid #ddd;
+
+        .salary-table th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            text-align: left;
+            font-size: 1.1em;
         }
-        .total {
-            font-weight: bold;
+
+        .salary-table td {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            font-size: 1.1em;
+        }
+
+        .total-box {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 4px;
+            margin: 30px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+
+        .net-pay {
+            font-size: 1.6em;
+            color: #27ae60;
+        }
+
+        .reimbursement-section {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .system-generated {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 1em;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="file://{{ company_logo }}" alt="Company Logo">
-        <h1>{{ company_name }}</h1>
-        <h2>Payslip for {{ salary.salary_date|date:"F Y" }}</h2>
+<div class="payslip-container">
+    <div class="company-info">
+        <div class="logo">
+            <img src="file://{{ company_logo }}" alt="Company Logo">
+        </div>
+        <div class="company-header">
+            <h2>{{ company_name }}</h2>
+            <p>Redeemer's University, Ede, Osun State.</p>
+        </div>
     </div>
-    <table class="details">
-        <tr>
-            <th>Employee Name:</th>
-            <td>{{ employee.name }}</td>
-        </tr>
-        <tr>
-            <th>Employee Code:</th>
-            <td>{{ employee.employee_code }}</td>
-        </tr>
-        <tr>
-            <th>Designation:</th>
-            <td>{{ employee.designation }}</td>
-        </tr>
-        <tr>
-            <th>Location:</th>
-            <td>{{ employee.location }}</td>
-        </tr>
-    </table>
-    <table class="salary-details">
-        <thead>
-            <tr>
-                <th>Description</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Basic Pay</td>
-                <td>{{ salary.basic_pay }}</td>
-            </tr>
-            <tr>
-                <td>Rent Allowance</td>
-                <td>{{ salary.rent_allowance }}</td>
-            </tr>
-            <tr>
-                <td>Transport Allowance</td>
-                <td>{{ salary.transport_allowance }}</td>
-            </tr>
-            <tr>
-                <td>Meal Allowance</td>
-                <td>{{ salary.meal_allowance }}</td>
-            </tr>
-            <tr>
-                <td>Utility Allowance</td>
-                <td>{{ salary.utility_allowance }}</td>
-            </tr>
-            <tr>
-                <td>Other Allowances</td>
-                <td>{{ salary.other_allowances }}</td>
-            </tr>
-            <tr>
-                <td>Overtime</td>
-                <td>{{ salary.overtime }}</td>
-            </tr>
-            <tr>
-                <td>Arrears</td>
-                <td>{{ salary.arrears }}</td>
-            </tr>
-            <tr class="total">
-                <td>Gross Pay</td>
-                <td>{{ gross_pay }}</td>
-            </tr>
-            <tr>
-                <td>Staff Loan Deduction</td>
-                <td>{{ salary.staff_loan_deduction }}</td>
-            </tr>
-            <tr>
-                <td>Rent Deduction</td>
-                <td>{{ salary.rent_deduction }}</td>
-            </tr>
-            <tr>
-                <td>Medical Deduction</td>
-                <td>{{ salary.medical_deduction }}</td>
-            </tr>
-            <tr>
-                <td>Pension Contribution</td>
-                <td>{{ salary.pension_contribution }}</td>
-            </tr>
-            <tr>
-                <td>Shortage Deduction</td>
-                <td>{{ salary.shortage_deduction }}</td>
-            </tr>
-            <tr>
-                <td>Development Levy</td>
-                <td>{{ salary.development_levy }}</td>
-            </tr>
-            <tr>
-                <td>Personal Income Tax</td>
-                <td>{{ salary.personal_income_tax }}</td>
-            </tr>
-            <tr class="total">
-                <td>Total Deductions</td>
-                <td>{{ total_deductions}}</td>
-            </tr>
-            <tr class="total">
-                <td>Net Pay</td>
-                <td>{{ net_pay }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="employee-section">
+        <div class="employee-info-row">
+            <div>
+                <span class="employee-info-label">Employee Name:</span>
+                {{ employee.name }}, {{ employee.employee_code }}
+            </div>
+            <div>
+                <span class="employee-info-label">Bank Name:</span>
+                {{ employee.bank_name }}
+            </div>
+        </div>
+        <div class="employee-info-row">
+            <div>
+                <span class="employee-info-label">Designation:</span>
+                {{ employee.designation }}
+            </div>
+            <div>
+                <span class="employee-info-label">Bank Account:</span>
+                {{ employee.account_number }}
+            </div>
+        </div>
+    </div>
+
+    <h3 class="section-title">Payslip for {{ payslip.date|date:"F Y" }}</h3>
+
+    <div class="earnings-deductions">
+        <!-- Earnings Column -->
+        <div>
+            <table class="salary-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Earnings</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Basic Pay</td>
+                        <td>N{{ salary.basic_pay }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rent Allowance</td>
+                        <td>N{{ salary.rent_allowance }}</td>
+                    </tr>
+                    <tr>
+                        <td>Transport Allowance</td>
+                        <td>N{{ salary.transport_allowance }}</td>
+                    </tr>
+                    <tr>
+                        <td>Meal Allowance</td>
+                        <td>N{{ salary.meal_allowance }}</td>
+                    </tr>
+                    <tr>
+                        <td>Utility Allowance</td>
+                        <td>N{{ salary.utility_allowance }}</td>
+                    </tr>
+                    <tr>
+                        <td>Other Allowances</td>
+                        <td>N{{ salary.other_allowances }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Deductions Column -->
+        <div>
+            <table class="salary-table">
+                <thead>
+                    <tr>
+                        <th colspan="2">Deductions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Staff Loan Deduction</td>
+                        <td>N{{ salary.staff_loan_deduction }}</td>
+                    </tr>
+                    <tr>
+                        <td>Rent Deduction</td>
+                        <td>N{{ salary.rent_deduction }}</td>
+                    </tr>
+                    <tr>
+                        <td>Medical Deduction</td>
+                        <td>N{{ salary.medical_deduction }}</td>
+                    </tr>
+                    <tr>
+                        <td>Pension Contribution</td>
+                        <td>N{{ salary.pension_contribution }}</td>
+                    </tr>
+                    <tr>
+                        <td>Development Levy</td>
+                        <td>N{{ salary.development_levy }}</td>
+                    </tr>
+                    <tr>
+                        <td>Income Tax</td>
+                        <td>N{{ salary.personal_income_tax }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="total-box">
+        <div class="total-row">
+            <span>Gross Earnings:</span>
+            <span>N{{ gross_pay }}</span>
+        </div>
+        <div class="total-row">
+            <span>Total Deductions:</span>
+            <span>N{{ payslip.total_deductions }}</span>
+        </div>
+        <div class="total-row net-pay">
+            <span>Net Pay:</span>
+            <span>N{{ payslip.net_pay }}</span>
+        </div>
+        {% comment %} <div class="text-muted text-center mt-2">
+            ({{ net_pay_words }})
+        </div> {% endcomment %}
+    </div>
+
+    <div class="system-generated">
+        This is a computer generated payslip and does not require signature
+    </div>
+</div>
 </body>
 </html>

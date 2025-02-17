@@ -15,7 +15,9 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMessage, send_mail
 from weasyprint import HTML
 from .models import Employee, Payslip, Salary
-from .forms import EmployeeForm, SalaryForm, EmployeeUploadForm, PayrollUploadForm
+from .forms import EmployeeForm, SalaryForm, EmployeeUploadForm,\
+    PayrollUploadForm, MonthlyPayrollSummaryForm,\
+        EmployeeCompensationReportForm
 
 
 # Create your views here.
@@ -46,6 +48,12 @@ def dashboard(request):
     }
 
     return render(request, 'core/dashboard.html', context)
+
+
+@login_required
+def management_dashboard(request):
+    return render(request, 'core/management_dashboard.html')
+
 
 @login_required
 def employee_list(request):
@@ -195,10 +203,9 @@ def generate_payslip_pdf(payslip):
     context = {
         'payslip': payslip,
         'salary': salary,
-        'employee': payslip.employee,
-        'company_name': 'Manna Palace',
-        'company_logo': os.path.join(settings.STATIC_ROOT, 'assets/img/brand/logo.png'),
         'gross_pay': gross_pay,
+        'employee': payslip.employee,
+        'company_name': "Redeemer's University Cafetaria",
         'total_deductions': total_deductions,
         'net_pay': net_pay
     }
@@ -446,3 +453,66 @@ def bulk_send_payslips(request):
         messages.success(request, f'{salaries.count()} payslips sent successfully.')
         return redirect('core:dashboard')
     return render(request, 'core/bulk_send_payslips.html')
+
+
+@login_required
+def monthly_payroll_summary(request):
+    form = MonthlyPayrollSummaryForm(request.POST or None)
+    report_data = None
+
+    if request.method == 'POST' and form.is_valid():
+        month = form.cleaned_data['month']
+        staff_type = form.cleaned_data['staff_type']
+        location = form.cleaned_data['location']
+
+        payslips = Payslip.objects.filter(date__year=month.year, date__month=month.month)
+
+        if staff_type:
+            payslips = payslips.filter(employee__staff_type=staff_type)
+        if location:
+            payslips = payslips.filter(employee__location=location)
+
+        if payslips.exists():
+            report_data = {
+                'total_salaries': payslips.aggregate(Sum('gross_pay'))['gross_pay__sum'] or 0,
+                'total_deductions': payslips.aggregate(Sum('total_deductions'))['total_deductions__sum'] or 0,
+                'total_net_pay': payslips.aggregate(Sum('net_pay'))['net_pay__sum'] or 0,
+                'payslips': payslips
+            }
+        else:
+            messages.info(request, "No data found for the specified month, staff type, and location.")
+
+    return render(request, 'core/monthly_payroll_summary.html', {'form': form, 'report_data': report_data})
+
+
+@login_required
+def employee_compensation_report(request):
+    form = EmployeeCompensationReportForm(request.POST or None)
+    report_data = None
+
+    if request.method == 'POST' and form.is_valid():
+        start_date = form.cleaned_data['start_date']
+        end_date = form.cleaned_data['end_date']
+        employees = form.cleaned_data['employees']
+        staff_type = form.cleaned_data['staff_type']
+        location = form.cleaned_data['location']
+
+        payslips = Payslip.objects.filter(date__range=[start_date, end_date])
+
+        if employees:
+            payslips = payslips.filter(employee__in=employees)
+        
+        if staff_type:
+            payslips = payslips.filter(employee__staff_type=staff_type)
+        
+        if location:
+            payslips = payslips.filter(employee__location=location)
+
+        if payslips.exists():
+            report_data = {
+                'payslips': payslips
+            }
+        else:
+            messages.info(request, "No data found for the specified date range, employees, staff type, and location.")
+
+    return render(request, 'core/employee_compensation_report.html', {'form': form, 'report_data': report_data})

@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %}Employee Compensation Report{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Employee Compensation Report</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Generate Report</button>
+    </form>
+
+    {% if report_data %}
+        <h3>Report Data</h3>
+        <h4>Payslips</h4>
+        <table class="table table-striped mt-3">
+            <thead>
+            <tr>
+                <th>Employee Name</th>
+                <th>Date</th>
+                <th>Gross Pay</th>
+                <th>Deductions</th>
+                <th>Net Pay</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for payslip in report_data.payslips %}
+                <tr>
+                <td>{{ payslip.employee.name }}</td>
+                <td>{{ payslip.date }}</td>
+                <td>{{ payslip.gross_pay }}</td>
+                <td>{{ payslip.total_deductions }}</td>
+                <td>{{ payslip.net_pay }}</td>
+                <td>
+                    <a href="{% url 'core:employee_update' payslip.employee.id %}" class="btn btn-sm btn-secondary">Update Employee Details</a>
+                    <a href="{% url 'core:view_payslip' payslip.id %}" class="btn btn-sm btn-primary">View Payslip</a>
+                    <a href="{% url 'core:salary_update' payslip.salary.id %}" class="btn btn-sm btn-warning">Update Salary Payment</a>
+                </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock content %}
