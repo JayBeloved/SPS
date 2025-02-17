@@ -150,7 +150,7 @@
 <body>
 <div class="payslip-container">
     <div class="company-info">
-        <div class="logo">
+        <div class="logo" style="margin: 0 auto;">
             <img src="file://{{ company_logo }}" alt="Company Logo">
         </div>
         <div class="company-header">
@@ -162,7 +162,7 @@
         <div class="employee-info-row">
             <div>
                 <span class="employee-info-label">Employee Name:</span>
-                {{ employee.name }}, {{ employee.employee_code }}
+                {{ employee.name }}
             </div>
             <div>
                 <span class="employee-info-label">Bank Name:</span>
@@ -171,7 +171,7 @@
         </div>
         <div class="employee-info-row">
             <div>
-                <span class="employee-info-label">Phone Number:</span>
+                <span class="employee-info-label">Employee Code:</span>
                 {{ employee.employee_code }}
             </div>
             <div>
@@ -185,8 +185,8 @@
                 {{ employee.email }}
             </div>
             <div>
-                <span class="employee-info-label">Staff Type:</span>
-                {{ employee.staff_type }}
+                <span class="employee-info-label">Phone Number:</span>
+                {{ employee.phone_number }}
             </div>
         </div>
         <div class="employee-info-row">
