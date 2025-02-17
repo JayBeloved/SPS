@@ -204,6 +204,7 @@ def generate_payslip_pdf(payslip):
         'payslip': payslip,
         'salary': salary,
         'gross_pay': gross_pay,
+        'company_logo': os.path.join(settings.BASE_DIR, 'static/images/logo.png'),
         'employee': payslip.employee,
         'company_name': "Redeemer's University Cafetaria",
         'total_deductions': total_deductions,
