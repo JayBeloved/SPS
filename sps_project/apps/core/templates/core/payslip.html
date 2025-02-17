@@ -24,7 +24,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .company-header {
+        .company-header .logo {
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
@@ -58,7 +58,7 @@
         }
 
         .logo {
-            text-align: right;
+            text-align: center;
             width: 100px;
         }
 
@@ -184,12 +184,32 @@
         </div>
         <div class="employee-info-row">
             <div>
-                <span class="employee-info-label">Designation:</span>
-                {{ employee.designation }}
+                <span class="employee-info-label">Phone Number:</span>
+                {{ employee.employee_code }}
             </div>
             <div>
                 <span class="employee-info-label">Bank Account:</span>
                 {{ employee.account_number }}
+            </div>
+        </div>
+        <div class="employee-info-row">
+            <div>
+                <span class="employee-info-label">Email:</span>
+                {{ employee.email }}
+            </div>
+            <div>
+                <span class="employee-info-label">Staff Type:</span>
+                {{ employee.staff_type }}
+            </div>
+        </div>
+        <div class="employee-info-row">
+            <div>
+                <span class="employee-info-label">Designation:</span>
+                {{ employee.designation }}
+            </div>
+            <div>
+                <span class="employee-info-label">Location:</span>
+                {{ employee.location }}
             </div>
         </div>
     </div>
