@@ -24,7 +24,29 @@ from .forms import EmployeeForm, SalaryForm, EmployeeUploadForm,\
 @login_required
 def dashboard(request):
     total_employees = Employee.objects.count()
-    total_salary_last_month = Payslip.objects.filter(date__month=timezone.now().month-1).aggregate(Sum('net_pay'))['net_pay__sum'] or 0
+    
+    # Get current month and last month data
+    current_month = timezone.now().month
+    last_month = (timezone.now().month - 1) if timezone.now().month > 1 else 12
+    current_year = timezone.now().year
+    last_month_year = current_year if last_month != 12 else current_year - 1
+    
+    # Get total salary for last month
+    total_salary_last_month = round(
+        Payslip.objects.filter(
+            date__year=last_month_year, 
+            date__month=last_month
+        ).aggregate(Sum('net_pay'))['net_pay__sum'] or 0, 1
+    )
+    
+    # Get total salary for current month
+    total_salary_current_month = round(
+        Payslip.objects.filter(
+            date__year=current_year, 
+            date__month=current_month
+        ).aggregate(Sum('net_pay'))['net_pay__sum'] or 0, 1
+    )
+    
     payrolls_processed = Payslip.objects.count()
 
     # Total salary paid per month
@@ -40,6 +62,7 @@ def dashboard(request):
     context = {
         'total_employees': total_employees,
         'total_salary_last_month': total_salary_last_month,
+        'total_salary_current_month': total_salary_current_month,
         'payrolls_processed': payrolls_processed,
         'salary_per_month': salary_per_month,
         'payrolls_per_month': payrolls_per_month,
