@@ -313,7 +313,7 @@ def export_employee_template(request):
     # Define the headers for the CSV file
     headers = [
         'name', 'email', 'location', 'staff_type', 'designation', 
-        'grade_level', 'account_number', 'bank_name', 'account_name'
+        'grade_level', 'account_number', 'bank_name', 'account_name', 'phone_number'
     ]
 
     # Create a CSV response
@@ -517,3 +517,7 @@ def employee_compensation_report(request):
             messages.info(request, "No data found for the specified date range, employees, staff type, and location.")
 
     return render(request, 'core/employee_compensation_report.html', {'form': form, 'report_data': report_data})
+
+@login_required
+def help_section(request):
+    return render(request, 'core/help.html')

@@ -1,0 +1,740 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Help Guide {% endblock title %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary">
+            <h2 class="text-white mb-0">SPS Application Help Guide</h2>
+        </div>
+        <div class="card-body">
+            <div class="nav-wrapper">
+                <ul class="nav nav-pills nav-fill flex-column flex-md-row" id="tabs-help" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0 active" id="tabs-getting-started-tab" data-toggle="tab" href="#tabs-getting-started" role="tab" aria-controls="tabs-getting-started" aria-selected="true">Getting Started</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-employee-tab" data-toggle="tab" href="#tabs-employee" role="tab" aria-controls="tabs-employee" aria-selected="false">Employee Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-payroll-tab" data-toggle="tab" href="#tabs-payroll" role="tab" aria-controls="tabs-payroll" aria-selected="false">Payroll Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-reports-tab" data-toggle="tab" href="#tabs-reports" role="tab" aria-controls="tabs-reports" aria-selected="false">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link mb-sm-3 mb-md-0" id="tabs-faq-tab" data-toggle="tab" href="#tabs-faq" role="tab" aria-controls="tabs-faq" aria-selected="false">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="tab-content p-3" id="helpTabContent">
+                <!-- Getting Started Tab Content -->
+                <div class="tab-pane fade show active" id="tabs-getting-started" role="tabpanel" aria-labelledby="tabs-getting-started-tab">
+                    <h3 class="mb-3">Getting Started with SPS (Salary Processing System)</h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Signing In</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Navigate to the login page.</li>
+                                <li>Enter your username and password.</li>
+                                <li>Click the "Sign In" button.</li>
+                                <li>If you've forgotten your password, contact system administrator for reset.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Dashboard Overview</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>The main dashboard provides an overview of key statistics:</p>
+                            <ul>
+                                <li><strong>Total Employees:</strong> Shows the current number of employees in the system.</li>
+                                <li><strong>Payrolls Processed:</strong> Displays the total number of payroll records processed.</li>
+                                <li><strong>Total Salary Last Month:</strong> Shows the total salary paid in the previous month.</li>
+                                <li><strong>Charts:</strong> Visual representations of salary paid per month and payrolls processed per month.</li>
+                                <li><strong>Recent Data:</strong> Tables showing recent employee records and payslips.</li>
+                            </ul>
+                            <p>The sidebar navigation menu provides access to all sections of the application, including:</p>
+                            <ul>
+                                <li>Dashboard</li>
+                                <li>Employees</li>
+                                <li>Salary</li>
+                                <li>Payslip</li>
+                                <li>Management</li>
+                                <li>Help (this section)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Management Dashboard</h4>
+                        </div>
+                        <div class="card-body">
+                            <p>The Management Dashboard provides access to administrative functions:</p>
+                            <ul>
+                                <li><strong>Employee Management:</strong> Tools for bulk uploading employees and exporting templates.</li>
+                                <li><strong>Payroll Management:</strong> Functions for importing payroll data, exporting templates, and bulk sending payslips.</li>
+                                <li><strong>Reports:</strong> Access to monthly payroll summaries and employee compensation reports.</li>
+                            </ul>
+                            <p>To access the Management Dashboard, click on "Management" in the sidebar navigation.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Employee Management Tab Content -->
+                <div class="tab-pane fade" id="tabs-employee" role="tabpanel" aria-labelledby="tabs-employee-tab">
+                    <h3 class="mb-3">Employee Management</h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Viewing Employee Records</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Employees" in the sidebar navigation.</li>
+                                <li>The Employee Management page displays all employees in a table format.</li>
+                                <li>Use the pagination at the bottom of the table to navigate through multiple pages of employee records.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Adding an Employee Individually</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Employees" in the sidebar navigation.</li>
+                                <li>Click the "Add New Employee" button at the top of the page.</li>
+                                <li>Fill out the employee form with the following details:
+                                    <ul>
+                                        <li>Name</li>
+                                        <li>Email</li>
+                                        <li>Phone Number</li>
+                                        <li>Location</li>
+                                        <li>Staff Type</li>
+                                        <li>Designation</li>
+                                        <li>Grade Level</li>
+                                        <li>Account Number</li>
+                                        <li>Bank Name</li>
+                                        <li>Account Name</li>
+                                    </ul>
+                                </li>
+                                <li>Click "Add Employee" to save the new employee record.</li>
+                                <li>The system will automatically generate an employee code.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Editing an Employee Record</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Employees" in the sidebar navigation.</li>
+                                <li>Find the employee you want to edit in the table.</li>
+                                <li>Click the "Update" button in the Actions column for that employee.</li>
+                                <li>Edit the employee information in the form that appears.</li>
+                                <li>Click "Save" to update the employee record.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Deleting an Employee</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Employees" in the sidebar navigation.</li>
+                                <li>Find the employee you want to delete in the table.</li>
+                                <li>Click the "Delete" button in the Actions column for that employee.</li>
+                                <li>Confirm the deletion in the confirmation dialog that appears.</li>
+                            </ol>
+                            <div class="alert alert-warning">
+                                <strong>Warning:</strong> Deleting an employee will also delete all associated salary and payslip records. This action cannot be undone.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Exporting Employee Template</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Employee Management section, click on "Export Employee Template".</li>
+                                <li>A CSV file will be downloaded with the following column headers:
+                                    <ul>
+                                        <li>name</li>
+                                        <li>email</li>
+                                        <li>location</li>
+                                        <li>staff_type</li>
+                                        <li>designation</li>
+                                        <li>grade_level</li>
+                                        <li>account_number</li>
+                                        <li>bank_name</li>
+                                        <li>account_name</li>
+                                        <li>phone_number</li>
+                                    </ul>
+                                </li>
+                                <li>Use this template to prepare your employee data for bulk upload.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Uploading Employee Data in Bulk</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>First, download and fill in the employee template as described above.</li>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Employee Management section, click on "Upload Employees".</li>
+                                <li>Click "Choose File" and select your completed CSV file.</li>
+                                <li>Click "Upload" to import the employee records.</li>
+                                <li>The system will automatically generate employee codes for all imported employees.</li>
+                            </ol>
+                            <div class="alert alert-info">
+                                <strong>Note:</strong> The system will check for duplicate records based on name and email, and will not create duplicates.
+                            </div>
+                            <div class="alert alert-info">
+                                <strong>Note:</strong> For better alignment with the system, the staff type should be one of the following values: 'SS' (Senior Staff), 'CoS' (Contract Staff), or 'CaS' (Casual Staff).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Payroll Management Tab Content -->
+                <div class="tab-pane fade" id="tabs-payroll" role="tabpanel" aria-labelledby="tabs-payroll-tab">
+                    <h3 class="mb-3">Payroll Management</h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Viewing Salary Records</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Salary" in the sidebar navigation.</li>
+                                <li>All salary records are displayed in a table format.</li>
+                                <li>Use the pagination at the bottom of the table to navigate through multiple pages of salary records.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Adding a Salary Record Individually</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Salary" in the sidebar navigation.</li>
+                                <li>Click "Add New Salary" button at the top of the page.</li>
+                                <li>Fill out the salary form with the following details:
+                                    <ul>
+                                        <li>Employee (select from dropdown)</li>
+                                        <li>Salary Date</li>
+                                        <li>Earnings:
+                                            <ul>
+                                                <li>Basic Pay</li>
+                                                <li>Rent Allowance</li>
+                                                <li>Transport Allowance</li>
+                                                <li>Meal Allowance</li>
+                                                <li>Utility Allowance</li>
+                                                <li>Other Allowances</li>
+                                                <li>Overtime</li>
+                                                <li>Arrears</li>
+                                            </ul>
+                                        </li>
+                                        <li>Deductions:
+                                            <ul>
+                                                <li>Staff Loan Deduction</li>
+                                                <li>Rent Deduction</li>
+                                                <li>Medical Deduction</li>
+                                                <li>Pension Contribution</li>
+                                                <li>Shortage Deduction</li>
+                                                <li>Development Levy</li>
+                                                <li>Personal Income Tax</li>
+                                            </ul>
+                                        </li>
+                                        <li>Attendance:
+                                            <ul>
+                                                <li>Number of Days</li>
+                                                <li>Actual Attendance</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>Click "Add Salary" to save the salary record.</li>
+                                <li>The system will automatically calculate gross pay, total deductions, and net pay and create a corresponding payslip.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Editing a Salary Record</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Salary" in the sidebar navigation.</li>
+                                <li>Find the salary record you want to edit.</li>
+                                <li>Click the "Update" button in the Actions column for that record.</li>
+                                <li>Edit the salary information in the form that appears.</li>
+                                <li>Click "Save" to update the salary record.</li>
+                            </ol>
+                            <div class="alert alert-info">
+                                <strong>Note:</strong> Updating a salary record will also update the corresponding payslip.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Exporting Payroll Template</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Payroll Management section, click on "Export Payroll Template".</li>
+                                <li>An Excel file will be downloaded containing all employees with the following columns:
+                                    <ul>
+                                        <li>employee_code</li>
+                                        <li>employee_name</li>
+                                        <li>basic_pay</li>
+                                        <li>rent_allowance</li>
+                                        <li>transport_allowance</li>
+                                        <li>meal_allowance</li>
+                                        <li>utility_allowance</li>
+                                        <li>other_allowances</li>
+                                        <li>overtime</li>
+                                        <li>arrears</li>
+                                        <li>staff_loan_deduction</li>
+                                        <li>rent_deduction</li>
+                                        <li>medical_deduction</li>
+                                        <li>pension_contribution</li>
+                                        <li>shortage_deduction</li>
+                                        <li>development_levy</li>
+                                        <li>personal_income_tax</li>
+                                        <li>no_of_days</li>
+                                        <li>actual_attendance</li>
+                                    </ul>
+                                </li>
+                                <li>Fill in the salary information for each employee in the template.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Importing Payroll Data</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>First, download and fill in the payroll template as described above.</li>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Payroll Management section, click on "Import Payroll".</li>
+                                <li>Click "Choose File" and select your completed Excel file.</li>
+                                <li>Click "Upload" to import the salary records.</li>
+                                <li>The system will:
+                                    <ul>
+                                        <li>Create salary records for each employee</li>
+                                        <li>Calculate gross pay, total deductions, and net pay</li>
+                                        <li>Generate payslips for each salary record</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Managing Payslips</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Payslip" in the sidebar navigation.</li>
+                                <li>All generated payslips are displayed in a table format.</li>
+                                <li>You can:
+                                    <ul>
+                                        <li><strong>View:</strong> Click "View" to see the PDF version of the payslip</li>
+                                        <li><strong>Send:</strong> Click "Send" to email the payslip to the employee</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Bulk Sending Payslips</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Payroll Management section, click on "Bulk Send Payslips".</li>
+                                <li>Select the month for which you want to send payslips.</li>
+                                <li>Click "Check Count" to see how many payslips will be sent.</li>
+                                <li>Click "Send All Payslips" to email payslips to all employees for the selected month.</li>
+                            </ol>
+                            <div class="alert alert-info">
+                                <strong>Note:</strong> Each employee will receive an email with their payslip attached as a PDF document.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Reports Tab Content -->
+                <div class="tab-pane fade" id="tabs-reports" role="tabpanel" aria-labelledby="tabs-reports-tab">
+                    <h3 class="mb-3">Reports</h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Monthly Payroll Summary</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Reports section, click on "Monthly Payroll Summary".</li>
+                                <li>Select filters for the report:
+                                    <ul>
+                                        <li>Month</li>
+                                        <li>Staff Type (optional)</li>
+                                        <li>Location (optional)</li>
+                                    </ul>
+                                </li>
+                                <li>Click "Generate Report" to view the summary.</li>
+                                <li>The report shows:
+                                    <ul>
+                                        <li>Total Salaries (Gross Pay)</li>
+                                        <li>Total Deductions</li>
+                                        <li>Total Net Pay</li>
+                                        <li>Detailed breakdown of payslips included in the report</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Employee Compensation Report</h4>
+                        </div>
+                        <div class="card-body">
+                            <ol>
+                                <li>Click on "Management" in the sidebar navigation to access the Management Dashboard.</li>
+                                <li>In the Reports section, click on "Employee Compensation Report".</li>
+                                <li>Select filters for the report:
+                                    <ul>
+                                        <li>Start Date</li>
+                                        <li>End Date</li>
+                                        <li>Specific Employees (optional)</li>
+                                        <li>Staff Type (optional)</li>
+                                        <li>Location (optional)</li>
+                                    </ul>
+                                </li>
+                                <li>Click "Generate Report" to view the compensation report.</li>
+                                <li>The report shows a detailed list of all payslips matching the criteria, including:
+                                    <ul>
+                                        <li>Employee details</li>
+                                        <li>Payslip dates</li>
+                                        <li>Gross pay</li>
+                                        <li>Deductions</li>
+                                        <li>Net pay</li>
+                                    </ul>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Tab Content -->
+                <div class="tab-pane fade" id="tabs-faq" role="tabpanel" aria-labelledby="tabs-faq-tab">
+                    <h3 class="mb-3">Frequently Asked Questions</h3>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>File Formats and Templates</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="fileFormatFAQ">
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingOne">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                What file format should I use for employee uploads?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#fileFormatFAQ">
+                                        <div class="card-body">
+                                            <div class="alert alert-warning">
+                                                <strong>Important:</strong> The Employee Template is exported as a CSV file, and must be uploaded as a CSV file. Do not convert it to Excel format before uploading.
+                                            </div>
+                                            <p>To properly use the Employee Template:</p>
+                                            <ol>
+                                                <li>Export the template using the "Export Employee Template" button</li>
+                                                <li>Fill in your employee data in the CSV file using a spreadsheet program</li>
+                                                <li>Save the file maintaining the CSV format</li>
+                                                <li>Upload the CSV file using the "Upload Employees" button</li>
+                                            </ol>
+                                            <p>Using any other file format will result in import errors.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingTwo">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                What file format should I use for payroll uploads?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#fileFormatFAQ">
+                                        <div class="card-body">
+                                            <div class="alert alert-warning">
+                                                <strong>Important:</strong> The Payroll Template is exported as an Excel file, and must be uploaded as an Excel file. Do not convert it to CSV format before uploading.
+                                            </div>
+                                            <p>To properly use the Payroll Template:</p>
+                                            <ol>
+                                                <li>Export the template using the "Export Payroll Template" button</li>
+                                                <li>Fill in your payroll data in the Excel file</li>
+                                                <li>Save the file maintaining the Excel format (.xlsx)</li>
+                                                <li>Upload the Excel file using the "Import Payroll" button</li>
+                                            </ol>
+                                            <p>Using any other file format will result in import errors.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingThree">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                What values should I use for the staff_type field?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#fileFormatFAQ">
+                                        <div class="card-body">
+                                            <div class="alert alert-info">
+                                                <strong>Staff Type Values:</strong> The staff_type field must use one of these specific codes:
+                                                <ul>
+                                                    <li><strong>SS</strong> - Senior Staff</li>
+                                                    <li><strong>CoS</strong> - Contract Staff</li>
+                                                    <li><strong>CaS</strong> - Casual Staff</li>
+                                                </ul>
+                                            </div>
+                                            <p>Using any other values will cause validation errors during import. The system is case-sensitive, so ensure you use the exact codes as shown above.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Common System Issues</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="systemIssuesFAQ">
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingFour">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                Why are my employee uploads failing?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#systemIssuesFAQ">
+                                        <div class="card-body">
+                                            <p>Common reasons for employee upload failures:</p>
+                                            <ul>
+                                                <li><strong>Incorrect file format:</strong> Using Excel (.xlsx) instead of CSV</li>
+                                                <li><strong>Invalid staff_type values:</strong> Using values other than 'SS', 'CoS', or 'CaS'</li>
+                                                <li><strong>Missing required fields:</strong> Name, email, and phone number are mandatory</li>
+                                                <li><strong>Duplicate records:</strong> The system checks for duplicates based on name and email</li>
+                                                <li><strong>Malformed CSV:</strong> Make sure your CSV file is properly formatted</li>
+                                            </ul>
+                                            <p>If issues persist, check the error messages displayed on the upload page for specific details.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingFive">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                Why are my payroll uploads failing?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#systemIssuesFAQ">
+                                        <div class="card-body">
+                                            <p>Common reasons for payroll upload failures:</p>
+                                            <ul>
+                                                <li><strong>Incorrect file format:</strong> Using CSV instead of Excel (.xlsx)</li>
+                                                <li><strong>Invalid employee codes:</strong> Employee codes must exist in the system</li>
+                                                <li><strong>Non-numeric values:</strong> Salary fields must contain numeric values only</li>
+                                                <li><strong>Missing required fields:</strong> Employee code and basic pay are mandatory</li>
+                                                <li><strong>Modified template structure:</strong> Don't alter column headers or sheet structure</li>
+                                            </ul>
+                                            <p>If issues persist, check the error messages displayed on the upload page for specific details.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingSix">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                                                Why aren't my payslips being sent to employees?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#systemIssuesFAQ">
+                                        <div class="card-body">
+                                            <p>Common reasons why payslips may not be sent:</p>
+                                            <ul>
+                                                <li><strong>Invalid email addresses:</strong> Ensure employee email addresses are correct</li>
+                                                <li><strong>Email server issues:</strong> Check with your IT department about email server status</li>
+                                                <li><strong>Large batch size:</strong> When sending many payslips at once, the process may take time</li>
+                                                <li><strong>Missing payslips:</strong> Ensure salary records exist for the selected month</li>
+                                            </ul>
+                                            <p>You can check the status of individual payslips on the Payslip page, where sent payslips are marked with a "Sent" status.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Best Practices</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="accordion" id="bestPracticesFAQ">
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingSeven">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true" aria-controls="collapseSeven">
+                                                What's the recommended workflow for monthly payroll processing?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#bestPracticesFAQ">
+                                        <div class="card-body">
+                                            <p>Follow this recommended workflow for efficient monthly payroll processing:</p>
+                                            <ol>
+                                                <li>Ensure all employee records are up-to-date before starting payroll</li>
+                                                <li>Export the payroll template from the Management Dashboard</li>
+                                                <li>Fill in the current month's salary information in the Excel template</li>
+                                                <li>Import the completed payroll data using the "Import Payroll" function</li>
+                                                <li>Review and correct any errors reported during the import process</li>
+                                                <li>Generate and review the Monthly Payroll Summary report</li>
+                                                <li>Use the "Bulk Send Payslips" function to distribute payslips to all employees</li>
+                                                <li>Archive the payroll data for future reference</li>
+                                            </ol>
+                                            <p>Following this sequence ensures all data is properly processed and all employees receive their payslips.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingEight">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                                                How can I ensure data accuracy when using the system?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#bestPracticesFAQ">
+                                        <div class="card-body">
+                                            <p>To ensure data accuracy:</p>
+                                            <ul>
+                                                <li><strong>Use system templates:</strong> Always use the templates provided by the system</li>
+                                                <li><strong>Maintain file formats:</strong> Don't convert between file formats (CSV/Excel)</li>
+                                                <li><strong>Regular backups:</strong> Export employee data periodically for backup</li>
+                                                <li><strong>Data validation:</strong> Review data before uploading to catch errors</li>
+                                                <li><strong>Check reports:</strong> Use the reporting features to verify processed data</li>
+                                                <li><strong>Test with samples:</strong> For large imports, test with a small sample first</li>
+                                            </ul>
+                                            <p>Taking these precautions will help prevent data errors and ensure smooth operation of the system.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="card mb-2">
+                                    <div class="card-header" id="headingNine">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                                                What should I do if I encounter an error?
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#bestPracticesFAQ">
+                                        <div class="card-body">
+                                            <p>If you encounter an error:</p>
+                                            <ol>
+                                                <li><strong>Read the error message:</strong> Most error messages describe the specific problem</li>
+                                                <li><strong>Check this FAQ:</strong> Many common issues are addressed here</li>
+                                                <li><strong>Verify your data:</strong> Check for formatting issues or invalid values</li>
+                                                <li><strong>Try again:</strong> If it's a temporary issue, a second attempt might succeed</li>
+                                                <li><strong>Clear cache:</strong> Try clearing your browser cache and reloading</li>
+                                                <li><strong>Contact support:</strong> If the issue persists, contact system support with:
+                                                    <ul>
+                                                        <li>A screenshot of the error message</li>
+                                                        <li>The steps you took before encountering the error</li>
+                                                        <li>Any relevant files (template, input data, etc.)</li>
+                                                    </ul>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    $(document).ready(function() {
+        // Make tabs responsive
+        $('#tabs-help a').on('click', function (e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+        
+        // Handle hash change to activate correct tab
+        var hash = window.location.hash;
+        if (hash) {
+            $('#tabs-help a[href="' + hash + '"]').tab('show');
+        }
+        
+        // Change hash for page-reload
+        $('#tabs-help a').on('shown.bs.tab', function (e) {
+            window.location.hash = e.target.hash;
+        });
+    });
+</script>
+{% endblock javascripts %}

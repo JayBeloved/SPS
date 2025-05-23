@@ -23,8 +23,8 @@ urlpatterns = [
     path('import-payroll/', views.import_payroll, name='import_payroll'),
     path('bulk-send-payslips/', views.bulk_send_payslips, name='bulk_send_payslips'),
     path('export-employee-template/', views.export_employee_template, name='export_employee_template'),
-     path('reports/monthly-payroll-summary/', views.monthly_payroll_summary, name='monthly_payroll_summary'),
+    path('reports/monthly-payroll-summary/', views.monthly_payroll_summary, name='monthly_payroll_summary'),
     path('reports/employee-compensation/', views.employee_compensation_report, name='employee_compensation_report'),
     path('management-dashboard/', views.management_dashboard, name='management_dashboard'), 
-    
+    path('help/', views.help_section, name='help'),
 ]
