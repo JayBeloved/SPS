@@ -162,7 +162,7 @@
                   </thead>
                   <tbody>
                     {% if payslips %}
-                      {% for payslip in payslips %}
+                      {% for payslip in payslips|slice:":5" %}
                         <tr>
                           <th scope="row">{{ payslip.employee.name }}</th>
                           <td>{{ payslip.date }}</td>
