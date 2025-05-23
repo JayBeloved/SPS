@@ -281,31 +281,100 @@ def upload_employees(request):
         form = EmployeeUploadForm(request.POST, request.FILES)
         if form.is_valid():
             csv_file = request.FILES['file']
-            decoded_file = csv_file.read().decode('utf-8').splitlines()
-            reader = csv.DictReader(decoded_file)
-            for row in reader:
-                if not Employee.objects.filter(name=row['name'], email=row['email']).exists():
-                    employee = Employee.objects.create(
-                        name=row['name'],
-                        email=row['email'],
-                        location=row['location'],
-                        staff_type=row['staff_type'],
-                        designation=row['designation'],
-                        grade_level=row['grade_level'],
-                        account_number=row['account_number'],
-                        bank_name=row['bank_name'],
-                        account_name=row['account_name'],
-                        phone_number=row['phone_number'],
-                    )
-                    employee.employee_code = generate_reference_code(employee)
-                    employee.save()
-            messages.success(request, 'Employees uploaded successfully.')
-            return redirect('core:employee_list')
+            
+            # Check file extension
+            if not csv_file.name.endswith('.csv'):
+                messages.error(request, 'Please upload a CSV file. The employee template requires a CSV format.')
+                return render(request, 'core/upload_employees.html', {'form': form})
+                
+            try:
+                decoded_file = csv_file.read().decode('utf-8').splitlines()
+                reader = csv.DictReader(decoded_file)
+                
+                # Check if the file is empty
+                if not reader.fieldnames:
+                    messages.error(request, 'The uploaded CSV file is empty or improperly formatted.')
+                    return render(request, 'core/upload_employees.html', {'form': form})
+                    
+                # Verify required columns exist
+                required_columns = ['name', 'email', 'staff_type', 'phone_number']
+                missing_columns = [col for col in required_columns if col not in reader.fieldnames]
+                if missing_columns:
+                    messages.error(request, f'The CSV file is missing required columns: {", ".join(missing_columns)}')
+                    return render(request, 'core/upload_employees.html', {'form': form})
+                
+                # Process rows
+                success_count = 0
+                error_count = 0
+                errors = []
+                
+                for row_num, row in enumerate(reader, start=2):  # Start at 2 to account for header row
+                    # Check required fields are not empty
+                    empty_fields = [field for field in required_columns if not row.get(field, '').strip()]
+                    
+                    if empty_fields:
+                        errors.append(f'Row {row_num}: Missing values for {", ".join(empty_fields)}')
+                        error_count += 1
+                        continue
+                    
+                    # Validate staff type
+                    valid_staff_types = ['SS', 'CoS', 'CaS']
+                    if row['staff_type'] not in valid_staff_types:
+                        errors.append(f'Row {row_num}: Invalid staff_type "{row["staff_type"]}". Must be one of {", ".join(valid_staff_types)}')
+                        error_count += 1
+                        continue
+                        
+                    # Check for duplicate
+                    if Employee.objects.filter(name=row['name'], email=row['email']).exists():
+                        errors.append(f'Row {row_num}: Employee with name "{row["name"]}" and email "{row["email"]}" already exists')
+                        error_count += 1
+                        continue
+                    
+                    try:
+                        # Create employee
+                        employee = Employee.objects.create(
+                            name=row['name'],
+                            email=row['email'],
+                            location=row.get('location', ''),
+                            staff_type=row['staff_type'],
+                            designation=row.get('designation', ''),
+                            grade_level=row.get('grade_level', ''),
+                            account_number=row.get('account_number', ''),
+                            bank_name=row.get('bank_name', ''),
+                            account_name=row.get('account_name', ''),
+                            phone_number=row['phone_number'],
+                        )
+                        employee.employee_code = generate_reference_code(employee)
+                        employee.save()
+                        success_count += 1
+                    except Exception as e:
+                        errors.append(f'Row {row_num}: Error creating employee - {str(e)}')
+                        error_count += 1
+                
+                # Report results
+                if success_count > 0:
+                    messages.success(request, f'Successfully imported {success_count} employee(s).')
+                
+                if error_count > 0:
+                    error_message = f'Failed to import {error_count} employee(s). First 5 errors:'
+                    for i, error in enumerate(errors[:5], 1):
+                        error_message += f'<br>{i}. {error}'
+                    if len(errors) > 5:
+                        error_message += f'<br>...and {len(errors) - 5} more errors.'
+                    messages.error(request, error_message)
+                
+                return redirect('core:employee_list')
+                
+            except UnicodeDecodeError:
+                messages.error(request, 'Unable to read the file. Please ensure it is a valid CSV file with UTF-8 encoding.')
+            except Exception as e:
+                messages.error(request, f'An error occurred while processing the file: {str(e)}')
         else:
             messages.error(request, 'Failed to upload employees. Please check the file format.')
     else:
         form = EmployeeUploadForm()
     return render(request, 'core/upload_employees.html', {'form': form})
+
     
     
 @login_required
@@ -360,70 +429,158 @@ def import_payroll(request):
         form = PayrollUploadForm(request.POST, request.FILES)
         if form.is_valid():
             excel_file = request.FILES['file']
-            workbook = openpyxl.load_workbook(excel_file)
-            sheet = workbook.active
-            for row in sheet.iter_rows(min_row=2, values_only=True):
-                employee_code, employee_name, basic_pay, rent_allowance, transport_allowance, \
-                meal_allowance, utility_allowance, other_allowances, overtime, arrears, \
-                staff_loan_deduction, rent_deduction, medical_deduction, pension_contribution, \
-                shortage_deduction, development_levy, personal_income_tax, no_of_days, actual_attendance = row
-                employee = Employee.objects.get(employee_code=employee_code)
-                salary = Salary.objects.create(
-                    employee=employee,
-                    basic_pay=basic_pay,
-                    rent_allowance=rent_allowance,
-                    transport_allowance=transport_allowance,
-                    meal_allowance=meal_allowance,
-                    utility_allowance=utility_allowance,
-                    other_allowances=other_allowances,
-                    overtime=overtime,
-                    arrears=arrears,
-                    staff_loan_deduction=staff_loan_deduction,
-                    rent_deduction=rent_deduction,
-                    medical_deduction=medical_deduction,
-                    pension_contribution=pension_contribution,
-                    shortage_deduction=shortage_deduction,
-                    development_levy=development_levy,
-                    personal_income_tax=personal_income_tax,
-                    no_of_days=no_of_days,
-                    actual_attendance=actual_attendance,
-                    salary_date=timezone.now()
-                )
-                gross_pay = (
-                    salary.basic_pay +
-                    salary.rent_allowance +
-                    salary.transport_allowance +
-                    salary.meal_allowance +
-                    salary.utility_allowance +
-                    salary.other_allowances +
-                    salary.overtime +
-                    salary.arrears
-                )
-                total_deductions = (
-                    salary.staff_loan_deduction +
-                    salary.rent_deduction +
-                    salary.medical_deduction +
-                    salary.pension_contribution +
-                    salary.shortage_deduction +
-                    salary.development_levy +
-                    salary.personal_income_tax
-                )
-                net_pay = gross_pay - total_deductions
+            
+            # Check file extension
+            if not excel_file.name.endswith(('.xlsx', '.xls')):
+                messages.error(request, 'Please upload an Excel file (.xlsx or .xls). The payroll template requires Excel format.')
+                return render(request, 'core/import_payroll.html', {'form': form})
+                
+            try:
+                workbook = openpyxl.load_workbook(excel_file)
+                sheet = workbook.active
+                
+                # Check if the sheet has content
+                if sheet.max_row <= 1:  # Only has header row or is empty
+                    messages.error(request, 'The uploaded Excel file is empty or contains only headers.')
+                    return render(request, 'core/import_payroll.html', {'form': form})
+                
+                # Verify required columns exist (check headers)
+                header_row = next(sheet.iter_rows(min_row=1, max_row=1, values_only=True))
+                if len(header_row) < 2 or 'employee_code' not in header_row and 'employee_name' not in header_row:
+                    messages.error(request, 'The Excel file is missing required headers. Please use the template provided by the system.')
+                    return render(request, 'core/import_payroll.html', {'form': form})
+                
+                # Process rows
+                success_count = 0
+                error_count = 0
+                errors = []
+                
+                for row_num, row in enumerate(sheet.iter_rows(min_row=2, values_only=True), start=2):
+                    # Check for empty rows
+                    if all(cell is None or cell == '' for cell in row):
+                        continue
+                        
+                    if len(row) < 2 or not row[0]:  # Missing employee code
+                        errors.append(f'Row {row_num}: Employee code is missing')
+                        error_count += 1
+                        continue
+                        
+                    employee_code = row[0]
+                    try:
+                        # Find employee
+                        employee = Employee.objects.get(employee_code=employee_code)
+                    except Employee.DoesNotExist:
+                        errors.append(f'Row {row_num}: Employee with code "{employee_code}" does not exist')
+                        error_count += 1
+                        continue
+                    
+                    try:
+                        # Safely get values and convert to appropriate types
+                        basic_pay = float(row[2] or 0)
+                        rent_allowance = float(row[3] or 0)
+                        transport_allowance = float(row[4] or 0)
+                        meal_allowance = float(row[5] or 0)
+                        utility_allowance = float(row[6] or 0)
+                        other_allowances = float(row[7] or 0)
+                        overtime = float(row[8] or 0)
+                        arrears = float(row[9] or 0)
+                        staff_loan_deduction = float(row[10] or 0)
+                        rent_deduction = float(row[11] or 0)
+                        medical_deduction = float(row[12] or 0)
+                        pension_contribution = float(row[13] or 0)
+                        shortage_deduction = float(row[14] or 0)
+                        development_levy = float(row[15] or 0)
+                        personal_income_tax = float(row[16] or 0)
+                        no_of_days = int(row[17] or 0)
+                        actual_attendance = int(row[18] or 0)
+                        
+                        # Create salary record
+                        salary = Salary.objects.create(
+                            employee=employee,
+                            basic_pay=basic_pay,
+                            rent_allowance=rent_allowance,
+                            transport_allowance=transport_allowance,
+                            meal_allowance=meal_allowance,
+                            utility_allowance=utility_allowance,
+                            other_allowances=other_allowances,
+                            overtime=overtime,
+                            arrears=arrears,
+                            staff_loan_deduction=staff_loan_deduction,
+                            rent_deduction=rent_deduction,
+                            medical_deduction=medical_deduction,
+                            pension_contribution=pension_contribution,
+                            shortage_deduction=shortage_deduction,
+                            development_levy=development_levy,
+                            personal_income_tax=personal_income_tax,
+                            no_of_days=no_of_days,
+                            actual_attendance=actual_attendance,
+                            salary_date=timezone.now()
+                        )
+                        
+                        # Calculate payslip values
+                        gross_pay = (
+                            salary.basic_pay +
+                            salary.rent_allowance +
+                            salary.transport_allowance +
+                            salary.meal_allowance +
+                            salary.utility_allowance +
+                            salary.other_allowances +
+                            salary.overtime +
+                            salary.arrears
+                        )
+                        total_deductions = (
+                            salary.staff_loan_deduction +
+                            salary.rent_deduction +
+                            salary.medical_deduction +
+                            salary.pension_contribution +
+                            salary.shortage_deduction +
+                            salary.development_levy +
+                            salary.personal_income_tax
+                        )
+                        net_pay = gross_pay - total_deductions
 
-                Payslip.objects.create(
-                    employee=salary.employee,
-                    salary=salary,
-                    date=salary.salary_date,
-                    gross_pay=gross_pay,
-                    total_deductions=total_deductions,
-                    net_pay=net_pay
-                )
-            messages.success(request, 'Payroll imported successfully.')
-            return redirect('core:salary_list')
+                        # Create payslip
+                        Payslip.objects.create(
+                            employee=salary.employee,
+                            salary=salary,
+                            date=salary.salary_date,
+                            gross_pay=gross_pay,
+                            total_deductions=total_deductions,
+                            net_pay=net_pay
+                        )
+                        success_count += 1
+                        
+                    except (ValueError, TypeError) as e:
+                        # Value conversion error (e.g. non-numeric data in numeric field)
+                        errors.append(f'Row {row_num}: Data type error - {str(e)}')
+                        error_count += 1
+                    except Exception as e:
+                        errors.append(f'Row {row_num}: Error processing record - {str(e)}')
+                        error_count += 1
+                
+                # Report results
+                if success_count > 0:
+                    messages.success(request, f'Successfully imported {success_count} salary record(s).')
+                
+                if error_count > 0:
+                    error_message = f'Failed to import {error_count} record(s). First 5 errors:'
+                    for i, error in enumerate(errors[:5], 1):
+                        error_message += f'<br>{i}. {error}'
+                    if len(errors) > 5:
+                        error_message += f'<br>...and {len(errors) - 5} more errors.'
+                    messages.error(request, error_message)
+                
+                return redirect('core:salary_list')
+                
+            except openpyxl.utils.exceptions.InvalidFileException:
+                messages.error(request, 'The file is not a valid Excel file. Please use the template provided by the system.')
+            except Exception as e:
+                messages.error(request, f'An error occurred while processing the file: {str(e)}')
+        else:
+            messages.error(request, 'Failed to upload payroll data. Please check the file format.')
     else:
         form = PayrollUploadForm()
     return render(request, 'core/import_payroll.html', {'form': form})
-    # Create payslip objects for each payroll imported
 
 @login_required
 def bulk_send_payslips(request):
